@@ -1,0 +1,23 @@
+{
+  "tooriistamaailm": [
+    "https://tooriistamaailm.ee/kaubamargid/makita",
+    "https://tooriistamaailm.ee/search?query=makita"
+  ],
+  "ehituskaup24": [
+    "https://www.ehituskaup24.ee/ee/catalogsearch/result/index/?cat=73&q=Makita",
+    "https://www.ehituskaup24.ee/ee/catalogsearch/result/?q=Makita",
+    "https://www.ehituskaup24.ee/ee/search/?q=Makita",
+    "https://www.ehituskaup24.ee/ee/catalogsearch/result/?q=makita",
+    "https://www.ehituskaup24.ee/ee/tooriistad",
+    "https://www.ehituskaup24.ee/ee/tooriistad/akutooriistad"
+  ],
+  "impert24": ["https://imper24.ee/et/"],
+  "inserv": [
+    "https://www.inserv.ee/brands",
+    "https://www.inserv.ee/search?query=Makita"
+  ],
+  "k-rauta": [
+    "https://www.k-rauta.ee/search?query=Makita",
+    "https://www.k-rauta.ee/c/tooriistad/elektrilised-tooriistad-ja-tarvikud/5h"
+  ]
+}
