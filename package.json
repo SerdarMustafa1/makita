@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "setup": "node src/setup.js",
-    "run": "node src/run.js"
+    "run": "node src/run.js",
+    "test": "node tests/run-tests.js"
   },
   "dependencies": {
     "better-sqlite3": "^8.0.0",
