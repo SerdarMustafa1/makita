@@ -34,42 +34,11 @@ jobs:
         run: |
           npx playwright install --with-deps
 
-      - name: Debug DB contents
-        run: |
-          set -euo pipefail
-          OUT=ci-debug.txt
-          echo "PWD: $(pwd)" > "$OUT"
-          echo "Listing workspace root:" >> "$OUT"
-          ls -la >> "$OUT" 2>&1 || true
-          echo "Listing data/:" >> "$OUT"
-          ls -la data >> "$OUT" 2>&1 || true
-          echo "File types in data/:" >> "$OUT"
-          for f in data/*; do file "$f" >> "$OUT" 2>&1 || true; done || true
-          if command -v sqlite3 >/dev/null 2>&1; then
-            for f in data/*.db; do
-              [ -f "$f" ] || continue
-              echo "=== Schema of $f ===" >> "$OUT"
-              sqlite3 "$f" .schema >> "$OUT" 2>&1 || echo "failed to read schema for $f" >> "$OUT"
-            done
-          else
-            echo "sqlite3 not available" >> "$OUT"
-          fi
-          echo "--- DEBUG OUTPUT START ---"
-          cat "$OUT"
+      # Debug steps removed — production run
 
       - name: Run scheduled script
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          set -o pipefail
-          npm run run 2>&1 | tee run-output.txt
-
-      - name: Upload CI debug artifact
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: ci-debug
-          path: |
-            ci-debug.txt
-            run-output.txt
+          npm run run
