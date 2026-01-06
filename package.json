@@ -1,0 +1,15 @@
+{
+  "name": "makita-monitor",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "setup": "node src/setup.js",
+    "run": "node src/run.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^8.0.0",
+    "dotenv": "^16.0.0",
+    "playwright": "^1.40.0",
+    "node-fetch": "^3.3.1"
+  }
+}
