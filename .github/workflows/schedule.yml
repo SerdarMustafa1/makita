@@ -62,11 +62,14 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
-          npm run run
+          set -o pipefail
+          npm run run 2>&1 | tee run-output.txt
 
       - name: Upload CI debug artifact
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ci-debug
-          path: ci-debug.txt
+          path: |
+            ci-debug.txt
+            run-output.txt
