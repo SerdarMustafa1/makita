@@ -34,6 +34,25 @@ jobs:
         run: |
           npx playwright install --with-deps
 
+      - name: Debug DB contents
+        run: |
+          echo "PWD: $(pwd)"
+          echo "Listing workspace root:"
+          ls -la
+          echo "Listing data/:"
+          ls -la data || true
+          echo "File types in data/:"
+          for f in data/*; do file "$f" || true; done || true
+          if command -v sqlite3 >/dev/null 2>&1; then
+            for f in data/*.db; do
+              [ -f "$f" ] || continue
+              echo "=== Schema of $f ==="
+              sqlite3 "$f" .schema || echo "failed to read schema for $f"
+            done
+          else
+            echo "sqlite3 not available"
+          fi
+
       - name: Run scheduled script
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
