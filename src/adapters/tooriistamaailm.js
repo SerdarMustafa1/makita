@@ -9,10 +9,9 @@ function pickText(el, selectors) {
   return null;
 }
 
-export default async function scan(page, url) {
-  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+async function parseFromPage(page) {
   await tryClickCookie(page).catch(()=>{});
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(200);
 
   // Try a set of likely product card selectors first
   const cardSelectors = ['.product', '.product-item', '.product-tile', '.product-card', '.tile', '.grid-item', '.catalog-item'];
@@ -46,8 +45,8 @@ export default async function scan(page, url) {
         try { href = new URL(href, page.url()).toString(); } catch (e) { /* ignore */ }
       }
 
-      const name = (await (anchor.textContent()).catch(()=>null))?.trim() || (await c.textContent()).catch? (await c.textContent()).trim() : '';
-      const raw = (await c.innerHTML()).catch(()=>'');
+      const name = (await anchor.textContent().catch(()=>null))?.trim() || (await c.textContent().catch(()=>null) || '').trim();
+      const raw = (await c.innerHTML().catch(()=>'')) || '';
 
       // Price extraction fallbacks
       const nowSelectors = ['.price .now', '.price-now', '.price-current', '.current-price', '.product-price .price', '[itemprop="price"]', '.price'];
@@ -97,4 +96,11 @@ export default async function scan(page, url) {
   }
 
   return out;
+}
+
+export { parseFromPage };
+
+export default async function scan(page, url) {
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  return parseFromPage(page);
 }

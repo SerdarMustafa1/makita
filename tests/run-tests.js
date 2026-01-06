@@ -1,7 +1,11 @@
 import { spawnSync } from 'child_process';
 
 const tests = [
-  'node tests/test-ehituskaup24.parse.test.js'
+  'node tests/test-ehituskaup24.parse.test.js',
+  'node tests/test-tooriistamaailm.parse.test.js',
+  'node tests/test-impert24.parse.test.js',
+  'node tests/test-inserv.parse.test.js',
+  'node tests/test-krRauta.parse.test.js'
 ];
 let failed = false;
 for (const t of tests) {
