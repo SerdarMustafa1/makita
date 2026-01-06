@@ -51,9 +51,11 @@ jobs:
           REPO: ${{ github.repository }}
           RUN_ID: ${{ github.run_id }}
           WORKFLOW: ${{ github.workflow }}
+          GIT_SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          MSG="Workflow ${WORKFLOW} failed in ${REPO}. Run: https://github.com/${REPO}/actions/runs/${RUN_ID}"
+          SHORT_SHA=${GIT_SHA:0:7}
+          MSG="CI FAIL — ${WORKFLOW} — ${REPO}\nRun: https://github.com/${REPO}/actions/runs/${RUN_ID}\nCommit: ${SHORT_SHA}"
           curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
             -d chat_id="${TELEGRAM_CHAT_ID}" \
             -d parse_mode=HTML \
