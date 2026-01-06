@@ -31,8 +31,5 @@ jobs:
           npx playwright install --with-deps
 
       - name: Run scheduled script
-        env:
-          # Set any repo secrets you need under Settings → Secrets and variables → Actions
-          # Example: DB_URL: ${{ secrets.DB_URL }}
         run: |
           npm run run
