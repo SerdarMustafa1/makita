@@ -36,22 +36,26 @@ jobs:
 
       - name: Debug DB contents
         run: |
-          echo "PWD: $(pwd)"
-          echo "Listing workspace root:"
-          ls -la
-          echo "Listing data/:"
-          ls -la data || true
-          echo "File types in data/:"
-          for f in data/*; do file "$f" || true; done || true
+          set -euo pipefail
+          OUT=ci-debug.txt
+          echo "PWD: $(pwd)" > "$OUT"
+          echo "Listing workspace root:" >> "$OUT"
+          ls -la >> "$OUT" 2>&1 || true
+          echo "Listing data/:" >> "$OUT"
+          ls -la data >> "$OUT" 2>&1 || true
+          echo "File types in data/:" >> "$OUT"
+          for f in data/*; do file "$f" >> "$OUT" 2>&1 || true; done || true
           if command -v sqlite3 >/dev/null 2>&1; then
             for f in data/*.db; do
               [ -f "$f" ] || continue
-              echo "=== Schema of $f ==="
-              sqlite3 "$f" .schema || echo "failed to read schema for $f"
+              echo "=== Schema of $f ===" >> "$OUT"
+              sqlite3 "$f" .schema >> "$OUT" 2>&1 || echo "failed to read schema for $f" >> "$OUT"
             done
           else
-            echo "sqlite3 not available"
+            echo "sqlite3 not available" >> "$OUT"
           fi
+          echo "--- DEBUG OUTPUT START ---"
+          cat "$OUT"
 
       - name: Run scheduled script
         env:
@@ -59,3 +63,10 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: |
           npm run run
+
+      - name: Upload CI debug artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ci-debug
+          path: ci-debug.txt
