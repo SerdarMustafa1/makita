@@ -4,13 +4,14 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 let TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-let CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+// allow an explicit group chat id env var for group notifications
+let CHAT_ID = process.env.TELEGRAM_GROUP_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
 let ready = false;
 let botInfo = null;
 
 async function init() {
   TOKEN = process.env.TELEGRAM_BOT_TOKEN;
-  CHAT_ID = process.env.TELEGRAM_CHAT_ID;
+  CHAT_ID = process.env.TELEGRAM_GROUP_CHAT_ID || process.env.TELEGRAM_CHAT_ID;
   ready = false;
   botInfo = null;
   if (!TOKEN) {
