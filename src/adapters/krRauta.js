@@ -15,8 +15,8 @@ async function parseFromPage(page) {
     }
     const name = (await anchor.textContent().catch(()=>null))?.trim() || (await c.textContent().catch(()=>null))?.trim() || '';
     const raw = (await c.innerHTML().catch(()=>'')) || '';
-    const nowText = (await c.$eval('.price, .price--now, [itemprop=price]', el=>el.textContent).catch(()=>null)) || null;
-    const wasText = (await c.$eval('del, .price--was, .old-price', el=>el.textContent).catch(()=>null)) || null;
+    const nowText = (await c.$eval('.price-current, .price, .price--now, [itemprop=price]', el=>el.textContent).catch(()=>null)) || null;
+    const wasText = (await c.$eval('del, .price--was, .old-price, .price-old', el=>el.textContent).catch(()=>null)) || null;
     const badge = (await c.$eval('.badge, .sale, .discount', el=>el.textContent).catch(()=>null)) || null;
     const now_price = parsePrice(nowText) || null;
     const was_price = parsePrice(wasText) || null;

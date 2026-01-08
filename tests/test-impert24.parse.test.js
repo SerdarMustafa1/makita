@@ -1,4 +1,5 @@
 import fs from 'fs';
+import assert from 'assert';
 import playwright from 'playwright';
 import { parseFromPage } from '../src/adapters/impert24.js';
 
@@ -8,7 +9,16 @@ import { parseFromPage } from '../src/adapters/impert24.js';
   const page = await browser.newPage();
   await page.setContent(html, { waitUntil: 'domcontentloaded' });
   const out = await parseFromPage(page);
-  console.log('Parsed items (impert24):', out.length);
-  for (const it of out) console.log('-', it.name, it.now_price, it.was_price, it.discount_pct);
+  assert(Array.isArray(out), 'parseFromPage should return an array');
+  if (out.length === 0) {
+    console.warn('impert24: parsed 0 items — please check fixture or adapter');
+    await browser.close();
+    process.exit(0);
+  }
+  const it = out[0];
+  assert(it.name && typeof it.name === 'string', 'item.name should be a string');
+  assert(typeof it.product_id === 'string' && it.product_id.length > 0, 'product_id present');
+  assert(typeof it.now_price === 'number' && it.now_price > 0, 'now_price should be a positive number');
   await browser.close();
+  console.log('impert24 parse test passed:', out.length, 'items');
 })();
