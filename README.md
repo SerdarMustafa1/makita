@@ -17,6 +17,9 @@ npx playwright install --with-deps
 ```
 TELEGRAM_BOT_TOKEN=123:ABC
 TELEGRAM_CHAT_ID=987654321
+TELEGRAM_REQUIRED_USER_ID=123456789
+# Or validate by admin username if you cannot supply a user id:
+TELEGRAM_REQUIRED_USERNAME=Ronald
 ```
 
 3. Initialize DB schema:
